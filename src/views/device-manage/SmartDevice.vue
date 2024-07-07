@@ -1,20 +1,24 @@
 <template>
- 
-    <el-button type="primary" @click="doConnected">连接</el-button>
+  <!-- <el-switch v-model="value" active-value="100"
+  inactive-value="0" @change="doConnected">> </el-switch> -->
+  <el-button type="primary" @click="doConnected">连接</el-button>
 
-    <div class="slider-demo-block"  max-width='100px'>
+  <div class="slider-demo-block" max-width="100px">
     <span class="demonstration">Default value</span>
     <el-slider v-model="key" :max="9" />
-    <el-button type="primary" style="margin-left: 50px;" @click="sendMqttMessage('testSlider', key)"
-  >发送</el-button>
+    <el-button
+      type="primary"
+      style="margin-left: 50px"
+      @click="sendMqttMessage(testSlider, key)"
+      >发送</el-button
+    >
   </div>
-  
 
-    <el-button type="primary" @click="doDisconnected">断开连接</el-button>
-    <p>收到的消息: {{ recvData }}</p>
-
+  <el-button type="primary" @click="doDisconnected">断开连接</el-button>
+  <p>收到的消息: {{ recvData }}</p>
 </template>
  
+
 <script>
 import mqtt from "mqtt"; // 引入mqtt模块
 
@@ -41,6 +45,7 @@ export default {
       },
       recvData: "", // 接收的消息
       key: 0,
+      // value: 100
     };
   },
   methods: {
@@ -112,24 +117,19 @@ export default {
     // },
 
     publish(topic, message) {
-      // if (!this.client.connected) {
-      //   console.log('客户端未连接')
-      //   return
-      // }
-      this.client.publish(topic, message, {qos: 0}, (err) => {
+      this.client.publish(topic, message, { qos: 0 }, (err) => {
         if (!err) {
-          console.log(`主题为：${topic},内容为：${message} 发布成功`)
+          console.log(`"主题为："${topic},内容为：${message} 发布成功`);
         }
-      })
+      });
     },
 
     sendMqttMessage(action, mode) {
       const message = {
-        action:action,
-        // params: mode !== undefined ? `${mode}` : "", // 根据 mode 的存在性设置 params
-        key: mode!==undefined?`${mode}`:""
+        key: mode !== undefined ? `${mode}` : "",
       };
-      const jsonString = JSON.stringify(message, null, 2);
+      const jsonString = `{ "key": ${message.key}}`;
+      // const jsonString = JSON.stringify(message, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:");
       this.publish("emqx/ir", jsonString);
     },
   },
