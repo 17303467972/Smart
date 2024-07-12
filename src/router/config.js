@@ -6,8 +6,9 @@ import RightList from '../views/right-manage/RightList.vue'
 
 //设备管理
 import DeviceList from '../views/device-manage/DeviceList.vue'
-import AddDevice from '../views/device-manage/AddDevice.vue'
+
 import SmartDevice from '../views/device-manage/SmartDevice.vue'
+
 
 
 const routes = [
@@ -29,14 +30,13 @@ const routes = [
         path:"/device-manage/devicelist",
         component:DeviceList
     },
-    {
-        path:"/device-manage/adddevice",
-        component:AddDevice
-    },
+
     {
         path:"/device-manage/smartdevice",
         component:SmartDevice
-    }
+    }   
+
+
 ]
 
 export default routes;

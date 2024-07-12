@@ -14,15 +14,15 @@
 
 
   <el-table :data="store.list" style="width: 100%">
-    <!-- <el-table-column prop="id" label="#ID" width="60">
+    <el-table-column prop="id" label="#ID" width="60">
 
-    </el-table-column> -->
+    </el-table-column>
     <el-table-column label="设备名称" width="180">
       <template #default="scope">
         <!-- <router-link :to="{name:'about',query:{id:scope.row.id}}">
           {{ scope.row.name }}
         </router-link> -->
-        <el-link type="primary" @click="jump(scope.row)">
+        <el-link type="primary" @click="jump(scope.row.id)">
           <b style="margin-left: 10px">
             {{ scope.row.name }}
           </b>
@@ -49,11 +49,20 @@
   </el-table>
   <!-- 设备详情展示 -->
 
-   <el-dialog v-model="dialogVisible1" title="设备详情" :fullscreen="true">
+   <el-dialog v-model="dialogVisible1" title="设备操作"  draggable>
         <div>
-          111
+          <SmartDevice/>
+        </div>
+    </el-dialog>
 
-
+    <el-dialog v-model="dialogVisible2" title="设备操作" draggable>
+        <div>
+          <taideng/>
+        </div>
+    </el-dialog>
+    <el-dialog v-model="dialogVisible3" title="设备操作"  draggable>
+        <div>
+          <dianshi/>
         </div>
     </el-dialog>
 </template>
@@ -63,10 +72,16 @@ import useDevicesStore from "../../store/useDevicesStore";
 import { useRouter } from 'vue-router'
 import addDeviceForm from "../../components/device/addDeviceForm.vue";
 import { ref } from 'vue'
+import SmartDevice from "./SmartDevice.vue";
+
+import taideng from "./taideng.vue";
+import dianshi from "./dianshi.vue"
 //表格dialog
 const dialogVisible = ref(false)
 //设备详情dialog
 const dialogVisible1 = ref(false)
+const dialogVisible2 = ref(false)
+const dialogVisible3 = ref(false)
 //pinia数据存储
 const store = useDevicesStore();
 //编辑
@@ -81,17 +96,40 @@ const handleDelete = (item) => {
 const router = useRouter()
 
 //预览
-const jump = (item) => {
+// const jump = (item) => {
 
+//     dialogVisible1.value = true
+//     currentItem.value = item
+// }
+// const currentItem = ref({})
+
+const currentItem = ref({})
+const jump = (id) => {
+  
+  // console.log("跳转",id)
+
+  if(id==1){
     dialogVisible1.value = true
     currentItem.value = item
-}
-const currentItem = ref({})
 
-// const jump = () => {
+    // router.push('/device-manage/SmartDevice')
+  }
+  if(id==2){
+    dialogVisible2.value = true
+    currentItem.value = item
+    // router.push('/device-manage/Taideng')
+  }
+  if(id==3){
+    dialogVisible3.value = true
+    currentItem.value = item
+    // router.push('/device-manage/Dianshi')
+  }
+
   
-//   router.push('/device-manage/SmartDevice')
-// }
+  // router.push('/device-manage/'+id)
+
+
+}
 
 </script>
   

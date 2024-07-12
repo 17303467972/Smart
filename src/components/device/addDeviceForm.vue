@@ -12,8 +12,13 @@
     <el-form-item label="编号" prop="id">
       <el-input v-model="ruleForm.id" />
     </el-form-item>
+
     <el-form-item label="设备名称" prop="name">
-      <el-input v-model="ruleForm.name" />
+      <el-select v-model="ruleForm.name" placeholder="设备名称">
+        <el-option label="空调" value="空调" />
+        <el-option label="台灯" value="台灯" />
+        <el-option label="电视" value="电视" />
+      </el-select>
     </el-form-item>
 
     <el-form-item label="购入时间" required>
@@ -46,9 +51,9 @@
 
     <el-form-item>
       <el-button type="primary" @click="submitForm(ruleFormRef)">
-        Create
+        确定
       </el-button>
-      <el-button @click="resetForm(ruleFormRef)">Reset</el-button>
+      <el-button @click="resetForm(ruleFormRef)">重置</el-button>
     </el-form-item>
   </el-form>
 </template>

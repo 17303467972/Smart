@@ -1,26 +1,101 @@
 <template>
-  <!-- <el-switch v-model="value" active-value="100"
-  inactive-value="0" @change="doConnected">> </el-switch> -->
-  <el-button type="primary" @click="doConnected">连接</el-button>
+  <div >
 
-  <div class="slider-demo-block" max-width="100px">
-    <span class="demonstration">Default value</span>
-    <el-slider v-model="key" :max="9" />
-    <el-button
-      type="primary"
-      style="margin-left: 50px"
-      @click="sendMqttMessage(testSlider, key)"
-      >发送</el-button
-    >
+    <div style="display: flex;align-items: center;justify-content: center;">
+      <!-- 智能控制 -->
+      <el-card style="max-width: 700px" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>智能控制</span>
+          </div>
+        </template>
+        <el-button
+          style="margin-bottom: 20px"
+          type="primary"
+          @click="doConnected"
+          >开启设备</el-button
+        >
+
+        <div class="slider-demo-block" max-width="100px">
+          <span style="margin-right: 20px">温度</span>
+          <el-slider v-model="temperature" :min="16" :max="30" />
+          <el-button
+            type="primary"
+            style="margin-left: 30px"
+            @click="sendMqttMessage('temperature', temperature)"
+            >发送</el-button
+          >
+        </div>
+
+        <div
+          class="slider-demo-block"
+          max-width="100px"
+          style="margin-top: 10px"
+        >
+          <span style="margin-right: 20px">湿度</span>
+          <el-slider v-model="humidity" :min="40" :max="60" />
+          <el-button
+            type="primary"
+            style="margin-left: 30px"
+            @click="sendMqttMessage('humidity', humidity)"
+            >发送</el-button
+          >
+        </div>
+        <div>
+          <div style="margin-top: 20px">
+            <span style="margin-right: 20px">风速</span>
+            <el-radio-group v-model="windspeed">
+              <el-radio-button label="低" value="低" />
+              <el-radio-button label="中" value="中" />
+              <el-radio-button label="高" value="高" />
+            </el-radio-group>
+            <el-button
+              type="primary"
+              style="margin-left: 30px"
+              @click="sendMqttMessage('windspeed', windspeed)"
+              >发送</el-button
+            >
+          </div>
+        </div>
+        <div>
+          <div style="margin-top: 20px">
+            <span style="margin-right: 20px">模式</span>
+            <el-radio-group v-model="mode">
+              <el-radio-button label="自动" value="自动" />
+              <el-radio-button label="制热" value="制热" />
+              <el-radio-button label="制冷" value="制冷" />
+              <el-radio-button label="除湿" value="除湿" />
+              <el-radio-button label="通风" value="通风" />
+            </el-radio-group>
+            <el-button
+              type="primary"
+              style="margin-left: 30px"
+              @click="sendMqttMessage('mode', mode)"
+              >发送</el-button
+            >
+          </div>
+        </div>
+        <el-button
+          style="margin-top: 20px"
+          type="primary"
+          @click="doDisconnected"
+          >关闭设备</el-button
+        >
+        <!-- <p>收到的消息: {{ recvData }}</p> -->
+      </el-card>
+    </div>
+    <!-- <div>
+      <deviceChart />
+    </div> -->
   </div>
-
-  <el-button type="primary" @click="doDisconnected">断开连接</el-button>
-  <p>收到的消息: {{ recvData }}</p>
 </template>
  
 
 <script>
 import mqtt from "mqtt"; // 引入mqtt模块
+
+// import deviceChart from "../../components/device/deviceChart.vue";
+
 
 export default {
   components: {},
@@ -44,7 +119,12 @@ export default {
         qos: 0,
       },
       recvData: "", // 接收的消息
-      key: 0,
+      
+      temperature: 0,
+      humidity: 0,
+      windspeed: "低",
+      mode: "自动",
+
       // value: 100
     };
   },
@@ -126,9 +206,14 @@ export default {
 
     sendMqttMessage(action, mode) {
       const message = {
-        key: mode !== undefined ? `${mode}` : "",
+        action: action,
+        params: mode !== undefined ? `${mode}` : "",
       };
-      const jsonString = `{ "key": ${message.key}}`;
+      const jsonString = `{ 
+      "action":${message.action}
+      "key": ${message.params}
+      }`;
+
       // const jsonString = JSON.stringify(message, null, 2).replace(/\"([^(\")"]+)\":/g,"$1:");
       this.publish("emqx/ir", jsonString);
     },
@@ -144,16 +229,7 @@ export default {
 }
 .slider-demo-block .el-slider {
   margin-top: 0;
+  width: 300px;
   margin-left: 12px;
-}
-.slider-demo-block .demonstration {
-  font-size: 14px;
-  color: var(--el-text-color-secondary);
-  line-height: 44px;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 0;
 }
 </style>

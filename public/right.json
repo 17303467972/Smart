@@ -44,12 +44,7 @@
                 "icon":"List"
                 
             },
-            {
-                "title":"增加设备",
-                "path":"/device-manage/adddevice",
-                "icon":"List"
-                
-            },
+
             {
                 "title":"智能管理",
                 "path":"/device-manage/smartdevice",
