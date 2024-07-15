@@ -1,12 +1,10 @@
 import {createRouter,createWebHashHistory} from 'vue-router'
 import Login from '../views/Login.vue'
 import MainBox from '../views/MainBox.vue'
-import dianshi from '../views/device-manage/dianshi.vue'
 import NotFound from '../views/notfound/NotFound.vue'
 import RouteConfig from './config'
 import {useRouterStore} from '../store/useRouterStore'
 import {useUserStore} from '../store/useUserStore'
-import taideng from '../views/device-manage/taideng.vue'
 
 const routes = [
     {
@@ -20,19 +18,6 @@ const routes = [
         name:"mainbox",
         component:MainBox
     },
-
-    {
-        path:"/device-manage/dianshi",
-        name:"dianshi",
-        component:dianshi
-    },
-    {
-        path:"/device-manage/taideng",
-        name:"taideng",
-        component:taideng
-    },
-
-
 
 
 ]

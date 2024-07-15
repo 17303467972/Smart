@@ -74,8 +74,8 @@ import addDeviceForm from "../../components/device/addDeviceForm.vue";
 import { ref } from 'vue'
 import SmartDevice from "./SmartDevice.vue";
 
-import taideng from "./taideng.vue";
-import dianshi from "./dianshi.vue"
+import taideng from "../../components/device/taideng.vue";
+import dianshi from "../../components/device/dianshi.vue"
 //表格dialog
 const dialogVisible = ref(false)
 //设备详情dialog

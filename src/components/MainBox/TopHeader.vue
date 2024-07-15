@@ -107,7 +107,10 @@ import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router';
 
 import { onMounted } from 'vue';
+
 import axios from 'axios'
+
+// import { getRightsInfo } from '../../../server/api/api';
 
 import { reactive, ref } from 'vue'
 
@@ -190,12 +193,24 @@ onMounted(
     handleSelect()
   }
 )
+
+// const handleSelect = async (data) => {
+//   getRightsInfo(data).then((res) => {
+//     console.log(res);
+
+//     datalist.value = res.data;
+//   });
+// };
+
+//原版本
 const handleSelect = async () => {
 
   var res = await axios.get("/right.json")
-  console.log(res.date)
+  console.log(res.data)
   datalist.value = res.data
 }
+
+
 
 const { changeUser, user } = useUserStore()
 const { changeRouter } = useRouterStore()

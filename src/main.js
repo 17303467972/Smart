@@ -12,6 +12,8 @@ import Particles from "@tsparticles/vue3";
 import { loadSlim } from "@tsparticles/slim"; 
 
 
+
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
