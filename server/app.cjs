@@ -60,7 +60,7 @@ app.get('/rights', (req, res) => {
     })
 })
 app.get('/getRightsInfo', (req, res) => {
-	let sql = `select * from rights where title = '${req.query.title}'`
+	let sql = `select * from rightss where title = '${req.query.title}'`
 	conMysql(sql).then(result => {
 		let response = new Response(true, '获取成功', 200, result)
 		res.send(response)

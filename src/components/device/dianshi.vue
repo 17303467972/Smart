@@ -6,7 +6,7 @@
         <el-card style="max-width: 700px" shadow="never">
           <template #header>
             <div class="card-header">
-              <span>智能控制</span>
+              <span>电视</span>
             </div>
           </template>
           <el-button
@@ -15,66 +15,71 @@
             @click="doConnected"
             >开启设备</el-button
           >
-  
-          <div class="slider-demo-block" max-width="100px">
-            <span style="margin-right: 20px">亮度</span>
-            <el-slider v-model="temperature" :min="0" :max="10" />
-            <el-button
-              type="primary"
-              style="margin-left: 30px"
-              @click="sendMqttMessage('temperature', temperature)"
-              >发送</el-button
-            >
-          </div>
-  
+
           <div
             class="slider-demo-block"
             max-width="100px"
             style="margin-top: 10px"
           >
             <span style="margin-right: 20px">音量</span>
-            <el-slider v-model="humidity" :min="0" :max="100" />
+            <el-slider v-model="volume" :min="0" :max="100" />
             <el-button
               type="primary"
               style="margin-left: 30px"
-              @click="sendMqttMessage('humidity', humidity)"
+              @click="sendMqttMessage('volume', volume)"
               >发送</el-button
             >
           </div>
+  
+          <div class="slider-demo-block" max-width="100px" style="margin-top: 20px;">
+            <span style="margin-right: 20px">亮度</span>
+            <el-slider v-model="luminance" show-stops :max="10" />
+            
+            <el-button
+              type="primary"
+              style="margin-left: 30px"
+              @click="sendMqttMessage('luminance', luminance)"
+              >发送</el-button
+            >
+          </div>
+  
+         
           <div>
             <div style="margin-top: 20px">
-              <span style="margin-right: 20px">风速</span>
-              <el-radio-group v-model="windspeed">
-                <el-radio-button label="低" value="低" />
-                <el-radio-button label="中" value="中" />
-                <el-radio-button label="高" value="高" />
+              <span style="margin-right: 20px">画质</span>
+              <el-radio-group v-model="quality">
+                <el-radio-button label="标清" value="标清" />
+                <el-radio-button label="高清" value="高清" />
+                <el-radio-button label="超清" value="超清" />
+                <el-radio-button label="蓝光" value="蓝光" />
               </el-radio-group>
               <el-button
                 type="primary"
-                style="margin-left: 30px"
-                @click="sendMqttMessage('windspeed', windspeed)"
+                style="margin-left: 107px"
+                @click="sendMqttMessage('quality', quality)"
                 >发送</el-button
               >
             </div>
           </div>
+
           <div>
             <div style="margin-top: 20px">
-              <span style="margin-right: 20px">模式</span>
-              <el-radio-group v-model="mode">
-                <el-radio-button label="自动" value="自动" />
-                <el-radio-button label="制热" value="制热" />
-                <el-radio-button label="制冷" value="制冷" />
-                <el-radio-button label="除湿" value="除湿" />
-                <el-radio-button label="通风" value="通风" />
+              <span style="margin-right: 20px">场景</span>
+              <el-radio-group v-model="scene">
+                <el-radio-button label="娱乐" value="娱乐" />
+                <el-radio-button label="投屏" value="投屏" />
+                <el-radio-button label="长辈" value="长辈" />
+                <el-radio-button label="儿童" value="儿童" />
               </el-radio-group>
               <el-button
                 type="primary"
-                style="margin-left: 30px"
-                @click="sendMqttMessage('mode', mode)"
+                style="margin-left: 107px"
+                @click="sendMqttMessage('scene', scene)"
                 >发送</el-button
               >
             </div>
           </div>
+        
           <el-button
             style="margin-top: 20px"
             type="primary"
@@ -120,10 +125,10 @@
         },
         recvData: "", // 接收的消息
         
-        temperature: 0,
-        humidity: 0,
-        windspeed: "低",
-        mode: "自动",
+        luminance:[5],
+        volume: 0,
+        quality: "标清",
+        scene: "娱乐",
   
         // value: 100
       };

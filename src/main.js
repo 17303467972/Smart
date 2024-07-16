@@ -14,6 +14,7 @@ import { loadSlim } from "@tsparticles/slim";
 
 
 
+
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
@@ -21,6 +22,7 @@ createApp(App)
 .use(router)
 .use(pinia)
 .use(ElementPlus)
+
 
 .use(Particles, {
     init: async engine => {

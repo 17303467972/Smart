@@ -6,7 +6,7 @@
         <el-card style="max-width: 700px" shadow="never">
           <template #header>
             <div class="card-header">
-              <span>智能控制</span>
+              <span>台灯</span>
             </div>
           </template>
           <el-button
@@ -18,11 +18,11 @@
   
           <div class="slider-demo-block" max-width="100px">
             <span style="margin-right: 20px">亮度</span>
-            <el-slider v-model="temperature" :min="0" :max="10" />
+            <el-slider v-model="luminance" :min="0" :max="10" />
             <el-button
               type="primary"
               style="margin-left: 30px"
-              @click="sendMqttMessage('temperature', temperature)"
+              @click="sendMqttMessage('luminance', luminance)"
               >发送</el-button
             >
           </div>
@@ -43,33 +43,34 @@
           </div> -->
           <div>
             <div style="margin-top: 20px">
-              <span style="margin-right: 20px">颜色</span>
-              <el-radio-group v-model="windspeed">
+              <span style="margin-right: 20px">色温</span>
+              <el-radio-group v-model="color">
                 <el-radio-button label="白" value="白" />
-                <el-radio-button label="黄" value="黄" />
+                <el-radio-button label="亮" value="亮" />
                 <el-radio-button label="暖" value="暖" />
               </el-radio-group>
               <el-button
                 type="primary"
-                style="margin-left: 30px"
-                @click="sendMqttMessage('windspeed', windspeed)"
+                style="margin-left: 207px"
+                @click="sendMqttMessage('color', color)"
                 >发送</el-button
               >
             </div>
           </div>
+          
+
+
           <div>
             <div style="margin-top: 20px">
               <span style="margin-right: 20px">模式</span>
               <el-radio-group v-model="mode">
-                <el-radio-button label="自动" value="自动" />
-                <el-radio-button label="制热" value="制热" />
-                <el-radio-button label="制冷" value="制冷" />
-                <el-radio-button label="除湿" value="除湿" />
-                <el-radio-button label="通风" value="通风" />
+                <el-radio-button label="护眼" value="护眼" />
+                <el-radio-button label="阅读" value="阅读" />
+                <el-radio-button label="睡眠" value="睡眠" />
               </el-radio-group>
               <el-button
                 type="primary"
-                style="margin-left: 30px"
+                style="margin-left: 165px"
                 @click="sendMqttMessage('mode', mode)"
                 >发送</el-button
               >
@@ -120,10 +121,9 @@
         },
         recvData: "", // 接收的消息
         
-        temperature: 0,
-        humidity: 0,
-        windspeed: "白",
-        mode: "自动",
+        luminance: 0,
+        color: "白",
+        mode: "护眼",
   
         // value: 100
       };

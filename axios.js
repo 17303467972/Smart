@@ -19,7 +19,7 @@ service.interceptors.response.use((response) => {
 	// 	// Message({message: message || 'error',type:'warning'})
 	// }
 	console.log('接受的数据')
-	return response.data
+	return response
 }, error => {
 	return Promise.reject(error)
 })

@@ -109,8 +109,7 @@ import { useRoute } from 'vue-router';
 import { onMounted } from 'vue';
 
 import axios from 'axios'
-
-// import { getRightsInfo } from '../../../server/api/api';
+import { getRightsInfo } from '../../../server/api/api';
 
 import { reactive, ref } from 'vue'
 
@@ -195,16 +194,14 @@ onMounted(
 )
 
 // const handleSelect = async (data) => {
-//   getRightsInfo(data).then((res) => {
-//     console.log(res);
-
-//     datalist.value = res.data;
-//   });
+//   getRightsInfo(data).then(res => {
+//     console.log(res.data);
+//     datalist.value = res.data.data;
+//   })
 // };
 
 //原版本
 const handleSelect = async () => {
-
   var res = await axios.get("/right.json")
   console.log(res.data)
   datalist.value = res.data
