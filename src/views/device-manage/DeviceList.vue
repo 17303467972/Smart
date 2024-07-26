@@ -7,7 +7,7 @@
 
   <el-dialog v-model="dialogVisible" title="新增设备" width="500" draggable>
     
-    <addDeviceForm>
+    <addDeviceForm @form-submitted="handleFormSubmitted"> 
 
     </addDeviceForm>
   </el-dialog>
@@ -37,12 +37,14 @@
     <el-table-column label="操作" width="180">
       <template #default="scope">
         <div>
-          <el-button type="warning" round @click="handleEdit(scope.row)"
-            >编辑</el-button
-          >
-          <el-button type="danger" round @click="handleDelete(scope.row)"
-            >删除</el-button
-          >
+          <el-button type="warning" round @click="handleEdit(scope.row, scope.$index)">编辑</el-button>
+          <el-popconfirm title="你确定要删除吗？" @confirm="handleDelete(scope.$index)" width="220px">
+            <template #reference>
+              <el-button type="danger" round 
+                >删除</el-button
+              >
+            </template>
+          </el-popconfirm>
         </div>
       </template>
     </el-table-column>
@@ -65,32 +67,60 @@
           <dianshi/>
         </div>
     </el-dialog>
+
+
+
+     <!-- 编辑设备对话框 -->
+  <el-dialog v-model="isFormVisible" title="编辑信息" width="500px" draggable>
+    <addDeviceForm
+      :initialData="selectedData"
+      :index="selectedIndex"
+      :isEditing="true"
+      @form-submitted="handleFormSubmitted"
+    />
+  </el-dialog>
+
 </template>
   
   <script setup>
 import useDevicesStore from "../../store/useDevicesStore";
 import { useRouter } from 'vue-router'
 import addDeviceForm from "../../components/device/addDeviceForm.vue";
-import { ref } from 'vue'
+import { ref ,reactive} from 'vue'
 import SmartDevice from "./SmartDevice.vue";
 
 import taideng from "../../components/device/taideng.vue";
 import dianshi from "../../components/device/dianshi.vue"
+
 //表格dialog
 const dialogVisible = ref(false)
 //设备详情dialog
 const dialogVisible1 = ref(false)
 const dialogVisible2 = ref(false)
 const dialogVisible3 = ref(false)
+
 //pinia数据存储
 const store = useDevicesStore();
+
+const isFormVisible = ref(false);
+const selectedData = ref(null);
+const selectedIndex = ref(null);
+
 //编辑
-const handleEdit = (item) => {
-  console.log(item);
+const handleEdit = (row, index) => {
+  selectedData.value = { ...row }; // 设置选中的数据
+  selectedIndex.value = index; // 记录索引
+  isFormVisible.value = true; // 显示编辑对话框
+};
+
+// 处理表单提交后的逻辑
+const handleFormSubmitted = () => {
+  isFormVisible.value = false;
+  dialogVisible.value = false;
 };
 //删除
-const handleDelete = (item) => {
-  console.log(item);
+const handleDelete = (index) => {
+  store.deleteData(index);
 };
 //1、要么就跳转到指定的路由，要么就用dialog，这个目前没有用到
 const router = useRouter()
@@ -127,7 +157,6 @@ const jump = (id) => {
 
   
   // router.push('/device-manage/'+id)
-
 
 }
 

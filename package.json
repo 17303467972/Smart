@@ -23,6 +23,7 @@
     "mysql": "^2.18.1",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "qs": "^6.12.3",
     "require": "^2.4.20",
     "requset": "^0.0.1-security",
     "sass": "^1.77.4",

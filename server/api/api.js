@@ -17,3 +17,15 @@ export function getRightsInfo(data) {
       params
     })
   }
+//列表删除
+// export function deleteUser(id){
+//   return service({
+//     method:'delete',
+//     url:`/getUser/${id}`
+//   })
+// }
+
+export function putUser(id, user){
+  return service.put(`/users/${id}`, user);
+}
+

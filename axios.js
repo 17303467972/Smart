@@ -1,9 +1,13 @@
 import Axios from 'axios'
 import {Promise} from 'core-js'
-// import { Message } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 const service = Axios.create({
-	baseURL: '/api',
-	timeout:3000
+	baseURL: 'http://localhost:3000/api',
+	timeout:3000,
+	headers: {
+		'Content-Type': 'application/json',
+	  },
+
 })
  
 service.interceptors.request.use((config) => {
@@ -15,9 +19,9 @@ service.interceptors.request.use((config) => {
  
 service.interceptors.response.use((response) => {
 	let {status,message }=response.data
-	// if(status !==200){
-	// 	// Message({message: message || 'error',type:'warning'})
-	// }
+	if(status !==200){
+		ElMessage({message: message || 'error',type:'warning'})
+	}
 	console.log('接受的数据')
 	return response
 }, error => {

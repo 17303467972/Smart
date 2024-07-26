@@ -59,7 +59,7 @@
 </template>
   
   <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { defineProps, defineEmits,reactive, ref ,watch} from "vue";
 import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 
 import useDevicesStore from "../../store/useDevicesStore";
@@ -67,6 +67,14 @@ import { useRouter } from "vue-router";
 
 const store = useDevicesStore();
 const router = useRouter();
+
+const props = defineProps({
+  initialData: Object as () => RuleForm,
+  index: Number,
+  isEditing: Boolean // 添加一个标志，表示是否是编辑模式
+});
+const emit = defineEmits(['form-submitted']);
+
 
 interface RuleForm {
   id: string;
@@ -78,15 +86,18 @@ interface RuleForm {
 
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
+
+
+
+// Initialize ruleForm with default values
 const ruleForm = reactive<RuleForm>({
-  id: "",
-  name: "",
-
-  date1: "",
-  type: "",
-
-  location: "",
+  id: '',
+  name: '',
+  date1: '',
+  type: '',
+  location: ''
 });
+
 
 const locationOptions = ["客厅", "主卧", "厨房", "卫生间", "次卧"];
 
@@ -127,22 +138,78 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 });
 
+
+// 监听 props.initialData 的变化
+watch(
+  () => props.initialData,
+  (newData) => {
+    if (newData) {
+      Object.assign(ruleForm, newData);
+    }
+  },
+  { deep: true, immediate: true }
+);
+
+
+// const submitForm = async (formEl: FormInstance | undefined) => {
+//   if (!formEl) return;
+//   await formEl.validate((valid, fields) => {
+//     if (valid) {
+//       console.log('submit!');
+
+      
+//       // Depending on the mode, either update or add the data
+//       if (props.isEditing) {
+//         store.updateData(props.index, ruleForm);
+//       } else {
+//         store.add(ruleForm);
+//       }
+//       router.push('/device-manage/DeviceList');
+//     } else {
+//       console.log('error submit!', fields);
+//     }
+//   });
+//   emit('form-submitted');
+// };
+
+
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      console.log("submit!");
-      store.add(ruleForm);
-      router.push("/device-manage/DeviceList");
+      console.log('提交成功！');
+      const store = useDevicesStore();
+      if (props.isEditing) {
+        store.updateData(props.index, ruleForm);
+      } else {
+        store.add(ruleForm);
+      }
+      router.push('/device-manage/DeviceList');
+      emit('form-submitted');
     } else {
-      console.log("error submit!", fields);
+      console.log('error submit!', fields);
     }
   });
 };
 
+
+
+
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  formEl.resetFields();
+  if (props.isEditing) {
+    // If in editing mode, reset to initial data
+    Object.assign(ruleForm, props.initialData);
+  } else {
+    // If in add mode, reset to default empty values
+    Object.assign(ruleForm, {
+      id: '',
+      name: '',
+      date1: '',
+      type: '',
+      location: ''
+    });
+  }
 };
 
 const options = Array.from({ length: 10000 }).map((_, idx) => ({
